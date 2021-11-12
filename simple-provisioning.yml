@@ -31,3 +31,43 @@
       tags:
         Name: webserver subnet
     register: result_subnet
+  - name: create igw
+    ec2_vpc_igw:
+      region: "{{ aws_region }}"
+      vpc_id: "{{ result_vpc.vpc.id }}"
+      state: present
+    register: result_igw
+  - name: Set up public subnet route table
+    ec2_vpc_route_table:
+      region: "{{ aws_region }}"
+      vpc_id: "{{ result_vpc.vpc.id }}"
+      tags:
+        Name: Public
+      subnets:
+        - "{{ result_subnet.subnet.id }}"
+      routes:
+        - dest: 0.0.0.0/0
+          gateway_id: "{{ result_igw.gateway_id }}"
+    register: result_routetable
+  - name: example using security group rule descriptions
+    ec2_group:
+      name: allow-tcp
+      description: sg with rule descriptions
+      region: "{{ aws_region }}"
+      vpc_id: "{{ result_vpc.vpc.id }}"
+      rules:
+        - proto: tcp
+          ports:
+          - 80
+          cidr_ip: 0.0.0.0/0
+          rule_desc: allow all on port 80
+  - ec2:
+    key_name: "{{ec2_key_name}}"
+    instance_type: "{{instance_type}}"
+    image: "{{instance_image}}"
+    wait: no
+    group: allow-tcp
+        instance_tags:
+       Name: postgres
+    vpc_subnet_id: "{{ result_subnet.subnet.id }}"
+    assign_public_ip: yes
