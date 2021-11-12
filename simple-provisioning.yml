@@ -68,7 +68,5 @@
       image: "{{instance_image}}"
       wait: no
       group: allow-tcp
-      instance_tags:
-        - Name: simple
       vpc_subnet_id: "{{ result_subnet.subnet.id }}"
       assign_public_ip: yes
