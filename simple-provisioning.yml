@@ -61,13 +61,14 @@
           - 80
           cidr_ip: 0.0.0.0/0
           rule_desc: allow all on port 80
-  - ec2:
-    key_name: "{{ec2_key_name}}"
-    instance_type: "{{instance_type}}"
-    image: "{{instance_image}}"
-    wait: no
-    group: allow-tcp
-      instance_tags:
-        Name: postgres
-    vpc_subnet_id: "{{ result_subnet.subnet.id }}"
-    assign_public_ip: yes
+  - name: create ec2 instance
+    ec2:
+      key_name: "{{ec2_key_name}}"
+      instance_type: "{{instance_type}}"
+      image: "{{instance_image}}"
+      wait: no
+      group: allow-tcp
+        instance_tags:
+            Name: simple
+      vpc_subnet_id: "{{ result_subnet.subnet.id }}"
+      assign_public_ip: yes
