@@ -15,13 +15,13 @@
   tasks:
   - name: create VPC
     ec2_vpc_net:
-      name: "{{vpc_name}}"
-      cidr_block: "{{vpc_cidr_block}}"
+      name: "{{ vpc_name }}"
+      cidr_block: "{{ vpc_cidr_block} }"
       region: "{{aws_region}}"
       tag:
         Name: "{{ vpc_name }}"
       tenancy: default
-    resgister: result_vpc
+    register: result_vpc
   - name: Create subnet
     ec2_vpc_subnet:
       state: present
