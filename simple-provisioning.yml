@@ -60,9 +60,11 @@
           - 80
           cidr_ip: 0.0.0.0/0
           rule_desc: allow all on port 80
-  - ec2:
+  - name: launch instance
+    ec2:
       key_name: "{{ec2_key_name}}"
       instance_type: "{{instance_type}}"
+      region: "{{ aws_region }}"
       image: "{{instance_image}}"
       wait: no
       group: allow-tcp
