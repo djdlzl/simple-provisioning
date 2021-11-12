@@ -67,6 +67,8 @@
       region: "{{ aws_region }}"
       image: "{{instance_image}}"
       wait: no
+      instance_tags:
+        Name: webserver
       group: allow-tcp
       vpc_subnet_id: "{{ result_subnet.subnet.id }}"
       assign_public_ip: yes
